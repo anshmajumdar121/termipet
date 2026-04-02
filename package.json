@@ -1,0 +1,37 @@
+{
+    "name": "termipet",
+    "version": "1.0.0",
+    "description": "An educational, themeable terminal companion framework",
+    "main": "src/index.js",
+    "bin": {
+          "termipet": "./src/cli/commands.js"
+    },
+    "scripts": {
+          "start": "node src/cli/commands.js",
+          "hatch": "node src/cli/commands.js hatch",
+          "show": "node src/cli/commands.js show",
+          "watch": "node src/cli/commands.js watch",
+          "stats": "node src/cli/commands.js stats",
+          "feed": "node src/cli/commands.js feed",
+          "play": "node src/cli/commands.js play",
+          "test": "node tests/test.js"
+    },
+    "keywords": [
+          "terminal",
+          "pet",
+          "game",
+          "education",
+          "cli",
+          "framework",
+          "tamagotchi",
+          "companion"
+    ],
+    "author": "TermiPet Contributors",
+    "license": "MIT",
+    "engines": {
+          "node": ">=14.0.0"
+    },
+    "dependencies": {
+          "chalk": "^4.1.2"
+    }
+}
