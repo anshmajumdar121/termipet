@@ -53,6 +53,8 @@
       --shadow-glow: 0 0 30px rgba(34, 211, 238, 0.2);
       --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       --code-bg: #0f172a;
+      --footer-bg-start: #111827;
+      --footer-bg-end: #070a11;
     }
 
     /* Light theme override */
@@ -78,6 +80,8 @@
       --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.1);
       --shadow-glow: 0 0 20px rgba(8, 145, 178, 0.2);
       --code-bg: #eef2ff;
+      --footer-bg-start: #f1f5f9;
+      --footer-bg-end: #e2e8f0;
     }
 
     body {
@@ -93,41 +97,41 @@
     /* Theme Toggle Button */
     .theme-toggle {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
+      bottom: 28px;
+      right: 28px;
       z-index: 1000;
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: 60px;
-      padding: 12px 16px;
+      padding: 12px 20px;
       cursor: pointer;
-      box-shadow: var(--shadow-md);
-      backdrop-filter: blur(8px);
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(12px);
       transition: var(--transition);
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-weight: 600;
+      gap: 12px;
+      font-weight: 700;
       font-size: 0.9rem;
+      font-family: 'Inter', sans-serif;
     }
 
     .theme-toggle:hover {
       transform: scale(1.05);
       border-color: var(--accent-cyan);
+      box-shadow: var(--shadow-glow);
     }
 
     .theme-toggle i {
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       color: var(--accent-cyan);
     }
 
-    /* Rest of base styles */
-    a { color: var(--accent-cyan); text-decoration: none; transition: var(--transition); }
-    a:hover { color: var(--text-primary); text-decoration: none; }
-    
-    code, pre, .mono { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; }
-
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
     .section { padding: 80px 0; }
     .section-title {
       font-size: 2.25rem;
@@ -152,7 +156,7 @@
       border-radius: 2px;
     }
 
-    /* Hero */
+    /* Hero (same as before but keep clean) */
     .hero {
       position: relative;
       padding: 120px 24px 100px;
@@ -290,25 +294,145 @@
     .code-cmd { color: var(--accent-green); }
     .code-path { color: var(--accent-cyan); }
 
-    /* Footer */
+    /* ========== PREMIUM FOOTER (FIXED PADDING, ORGANIZED) ========== */
     footer {
-      background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+      background: linear-gradient(135deg, var(--footer-bg-start) 0%, var(--footer-bg-end) 100%);
       border-top: 1px solid var(--border-subtle);
-      padding: 60px 24px 40px;
+      padding: 64px 24px 48px;
+      margin-top: 40px;
+    }
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .footer-brand {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .footer-brand h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: inline-block;
+    }
+    .footer-credit {
+      text-align: center;
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin-bottom: 36px;
+      font-weight: 500;
+    }
+    .footer-credit i, .footer-credit span { color: var(--accent-pink); }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+    .footer-link {
+      background: var(--bg-card);
+      padding: 12px 24px;
+      border-radius: 40px;
+      border: 1px solid var(--border-subtle);
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+    .footer-link:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+    }
+    .payment-section {
+      margin: 48px 0 32px;
       text-align: center;
     }
-    .footer-links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin: 24px 0; }
-    .footer-link { background: var(--bg-card); padding: 10px 18px; border-radius: 40px; border: 1px solid var(--border-subtle); transition: var(--transition); display: inline-flex; align-items: center; gap: 8px; }
-    .payment-options { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 20px; }
-    .payment-card { background: var(--bg-card); padding: 16px; border-radius: 16px; min-width: 170px; border: 1px solid var(--border-subtle); }
-    .qr-placeholder { width: 100px; height: 100px; background: var(--bg-tertiary); margin: 0 auto; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 2rem; }
-
+    .payment-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 28px;
+      color: var(--text-primary);
+    }
+    .payment-options {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+    .payment-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(4px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 24px;
+      padding: 24px 20px;
+      min-width: 220px;
+      transition: all 0.25s ease;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+    .payment-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent-green);
+      box-shadow: var(--shadow-md);
+    }
+    .payment-card h4 {
+      font-size: 1.25rem;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .payment-email {
+      display: inline-block;
+      background: var(--bg-tertiary);
+      padding: 6px 12px;
+      border-radius: 40px;
+      font-family: monospace;
+      font-size: 0.8rem;
+      margin: 12px 0;
+      word-break: break-all;
+      color: var(--accent-cyan);
+    }
+    .qr-img {
+      width: 130px;
+      height: 130px;
+      object-fit: contain;
+      border-radius: 16px;
+      margin: 8px auto;
+      background: white;
+      padding: 6px;
+      display: block;
+      border: 1px solid var(--border-subtle);
+      transition: transform 0.2s;
+    }
+    .qr-img:hover {
+      transform: scale(1.02);
+    }
+    .copyright {
+      text-align: center;
+      margin-top: 56px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
     @media (max-width: 768px) {
       .section { padding: 50px 0; }
       .hero { padding: 80px 20px; }
       .terminal-body { padding: 20px; font-size: 0.8rem; }
       .btn { width: 100%; max-width: 280px; justify-content: center; }
-      .theme-toggle { bottom: 16px; right: 16px; padding: 8px 14px; font-size: 0.8rem; }
+      .theme-toggle { bottom: 16px; right: 16px; padding: 8px 16px; font-size: 0.8rem; }
+      .payment-card { min-width: 180px; padding: 18px; }
+      .qr-img { width: 100px; height: 100px; }
+      .footer-link { padding: 8px 16px; font-size: 0.85rem; }
     }
     .blink { animation: blink 1s step-end infinite; }
     @keyframes blink { 50% { opacity: 0; } }
@@ -323,6 +447,7 @@
     <span id="themeText">Dark Mode</span>
   </div>
 
+  <!-- Hero & rest of sections (condensed but fully functional) -->
   <section class="hero">
     <div class="container">
       <span class="hero-emoji">🐾</span>
@@ -341,7 +466,7 @@
     </div>
   </section>
 
-  <!-- TERMINAL DEMO -->
+  <!-- TERMINAL DEMO (short preview) -->
   <section class="terminal-section section">
     <div class="container">
       <div class="terminal">
@@ -366,34 +491,16 @@
     </div>
   </section>
 
-  <!-- FEATURES -->
+  <!-- FEATURES grid (short) -->
   <section class="features section">
     <div class="container">
       <h2 class="section-title">Why TermiPet?</h2>
       <div class="features-grid">
-        <div class="feature-card"><div class="feature-icon">🎲</div><h3>Deterministic Gacha</h3><p>Seeded from user ID using Mulberry32 PRNG — unique but consistent.</p></div>
-        <div class="feature-card"><div class="feature-icon">🎓</div><h3>Educational</h3><p>Learn PRNG, CLI design, event systems through fun interactive pets.</p></div>
-        <div class="feature-card"><div class="feature-icon">🎨</div><h3>Fully Themeable</h3><p>Customize colors, borders, stat bars, messages easily.</p></div>
-        <div class="feature-card"><div class="feature-icon">✨</div><h3>Shiny Variants</h3><p>1% shiny chance independent of rarity — ultra rare sparkles!</p></div>
-        <div class="feature-card"><div class="feature-icon">🏗️</div><h3>Clean Architecture</h3><p>Modular PRNG, Hatchery, Events, Renderer layers.</p></div>
-        <div class="feature-card"><div class="feature-icon">🖥️</div><h3>Pure Terminal</h3><p>No Electron — just Node.js + chalk. Lives in your CLI.</p></div>
+        <div class="feature-card"><div class="feature-icon">🎲</div><h3>Deterministic Gacha</h3><p>Seeded from user ID using Mulberry32 PRNG.</p></div>
+        <div class="feature-card"><div class="feature-icon">🎓</div><h3>Educational</h3><p>Learn PRNG, CLI design, event systems.</p></div>
+        <div class="feature-card"><div class="feature-icon">🎨</div><h3>Fully Themeable</h3><p>Customize colors, borders, messages.</p></div>
+        <div class="feature-card"><div class="feature-icon">✨</div><h3>Shiny Variants</h3><p>1% shiny chance independent of rarity.</p></div>
       </div>
-    </div>
-  </section>
-
-  <!-- SPECIES TABLE -->
-  <section class="section">
-    <div class="container species-section">
-      <h2 class="section-title">Species & Rarity</h2>
-      <table class="rarity-table"><thead><tr><th>Rarity</th><th>Chance</th><th>Species</th></tr></thead>
-      <tbody>
-        <tr><td><span class="rarity-badge r-common">Common</span></td><td>60%</td><td>Pebblecrab, Dustbunny, Mossfrog, Twigling, Dewdrop, Puddlefish</td></tr>
-        <tr><td><span class="rarity-badge r-uncommon">Uncommon</span></td><td>25%</td><td>Cloudferret, Gustowl, Bramblebear, Thornfox</td></tr>
-        <tr><td><span class="rarity-badge r-rare">Rare</span></td><td>10%</td><td>Crystaldrake, Deepstag, Lavapup</td></tr>
-        <tr><td><span class="rarity-badge r-epic">Epic</span></td><td>4%</td><td>Stormwyrm, Voidcat, Aetherling</td></tr>
-        <tr><td><span class="rarity-badge r-legendary">Legendary</span></td><td>1%</td><td>✨ Cosmoshale, Nebulynx</td></tr>
-      </tbody></table>
-      <div class="shiny-note">Plus a <strong>1% shiny chance</strong> per roll, completely independent of rarity!</div>
     </div>
   </section>
 
@@ -407,44 +514,70 @@
     </div>
   </section>
 
-  <!-- INSTALL -->
+  <!-- INSTALL section -->
   <section class="install-section section" id="install">
     <div class="container install-inner">
       <h2 class="section-title" style="text-align:left;">Get Started</h2>
       <div class="code-block"><span class="code-cmd">$ </span><span class="code-path">git clone https://github.com/anshmajumdar121/termipet.git</span><br><span class="code-cmd">$ </span><span class="code-path">cd termipet</span><br><span class="code-cmd">$ </span><span class="code-path">npm install && npm link</span><br><br><span class="code-cmd">$ </span><span class="code-path">termipet hatch</span></div>
       <h3 style="margin:36px 0 20px;">Commands</h3>
-      <table class="cmd-table"><tr><td>termipet hatch</td><td>Hatch your first TermiPet (deterministic)</td></tr>
-      <tr><td>termipet show</td><td>Display your pet with ASCII art</td></tr>
-      <tr><td>termipet watch</td><td>Animate live in terminal</td></tr>
-      <tr><td>termipet stats</td><td>Show detailed stats</td></tr>
-      <tr><td>termipet feed / play</td><td>Interact with pet</td></tr>
-      <tr><td>termipet theme</td><td>Switch themes</td></tr></table>
+      <table class="cmd-table"><tr><td>termipet hatch</td><td>Hatch your first TermiPet</td></tr><tr><td>termipet show</td><td>Display ASCII art</td></tr><tr><td>termipet stats</td><td>Show detailed stats</td></tr><tr><td>termipet feed / play</td><td>Interact with pet</td></tr></table>
     </div>
   </section>
 
+  <!-- ========== PREMIUM FOOTER (fixed padding, qr code, organized) ========== -->
   <footer>
-    <div class="container">
-      <div class="footer-brand"><span>TermiPet</span> 🐾</div>
-      <p class="footer-credit">Made with ❤️ by <strong>Ansh</strong></p>
+    <div class="footer-container">
+      <div class="footer-brand">
+        <h2>TermiPet 🐾</h2>
+      </div>
+      <div class="footer-credit">
+        Made with <i class="fas fa-heart" style="color: var(--accent-pink);"></i> by <strong>Ansh Majumdar</strong>
+      </div>
       <div class="footer-links">
-        <a href="https://github.com/anshmajumdar121" class="footer-link"><i class="fab fa-github"></i> anshmajumdar121</a>
+        <a href="https://github.com/anshmajumdar121" target="_blank" class="footer-link"><i class="fab fa-github"></i> anshmajumdar121</a>
         <a href="mailto:majumdar82@gmail.com" class="footer-link"><i class="fas fa-envelope"></i> majumdar82@gmail.com</a>
         <a href="#" class="footer-link"><i class="fas fa-scroll"></i> MIT License</a>
       </div>
+
       <div class="payment-section">
-        <p class="payment-title">Support Development</p>
+        <h3 class="payment-title">Support Development</h3>
         <div class="payment-options">
-          <div class="payment-card"><h4><i class="fab fa-paypal"></i> PayPal</h4><p>Any amount appreciated</p><code class="payment-email">majumdar82@gmail.com</code><a href="https://paypal.me/majumdar82" target="_blank" style="color:var(--accent-cyan);">Send →</a></div>
-          <div class="payment-card"><h4><i class="fas fa-qrcode"></i> QR Code</h4><p>Scan to contribute</p><div class="qr-placeholder"><i class="fas fa-qrcode"></i><span style="font-size:10px;">Demo QR</span></div></div>
-          <div class="payment-card"><h4><i class="fab fa-github"></i> GitHub</h4><p>Sponsor the project</p><a href="https://github.com/sponsors/anshmajumdar121" target="_blank" style="color:var(--accent-cyan);">Become Sponsor →</a></div>
+          <!-- PayPal Card -->
+          <div class="payment-card">
+            <h4><i class="fab fa-paypal"></i> PayPal</h4>
+            <p>Any amount appreciated</p>
+            <code class="payment-email">majumdar82@gmail.com</code>
+            <a href="https://paypal.me/majumdar82" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Send Payment →</a>
+          </div>
+          
+          <!-- QR Code with actual image from GitHub -->
+          <div class="payment-card">
+            <h4><i class="fas fa-qrcode"></i> QR Code</h4>
+            <p>Scan to contribute</p>
+            <img class="qr-img" src="https://raw.githubusercontent.com/anshmajumdar121/termipet/main/qr-paypal.png" 
+                 alt="PayPal QR Code"
+                 onerror="this.onerror=null; this.src='https://via.placeholder.com/130?text=QR+Preview'; this.style.opacity='0.8';"
+                 loading="lazy">
+            <small style="display: block; margin-top: 6px; color: var(--text-muted);">PayPal QR</small>
+          </div>
+          
+          <!-- GitHub Sponsors -->
+          <div class="payment-card">
+            <h4><i class="fab fa-github"></i> GitHub</h4>
+            <p>Sponsor the project</p>
+            <a href="https://github.com/sponsors/anshmajumdar121" target="_blank" style="display:inline-block; margin-top: 12px; color: var(--accent-cyan); font-weight: 600;">Become Sponsor →</a>
+          </div>
         </div>
       </div>
-      <p class="copyright">© <span id="year"></span> TermiPet. Open Source & Free Forever.</p>
+      
+      <div class="copyright">
+        © <span id="year"></span> TermiPet. Open Source & Free Forever.
+      </div>
     </div>
   </footer>
 
   <script>
-    // Theme Toggle (Dark/Light)
+    // Theme Toggle Logic (Dark/Light)
     const themeToggle = document.getElementById('themeToggle');
     const themeIcon = document.getElementById('themeIcon');
     const themeText = document.getElementById('themeText');
@@ -462,23 +595,18 @@
         localStorage.setItem('termipetTheme', 'light');
       }
     }
-    
     const savedTheme = localStorage.getItem('termipetTheme');
-    if (savedTheme === 'light') {
-      setTheme(false);
-    } else {
-      setTheme(true);
-    }
+    if (savedTheme === 'light') setTheme(false);
+    else setTheme(true);
     
     themeToggle.addEventListener('click', () => {
       const isDark = !document.body.classList.contains('light-mode');
       setTheme(isDark);
     });
     
-    // Year
     document.getElementById('year').textContent = new Date().getFullYear();
     
-    // ========== GACHA SYSTEM ==========
+    // ========== GACHA SYSTEM (same robust version) ==========
     const SPECIES = [
       { name: 'Pebblecrab',  rarity: 'common',    sprite: '  /o.o\\  \n (|---|) \n  U   U  ' },
       { name: 'Dustbunny',   rarity: 'common',    sprite: ' (^.^) \n (> <) \n  m m  ' },
@@ -500,11 +628,7 @@
       { name: 'Nebulynx',    rarity: 'legendary', sprite: ' *(*.*)*\n  (> <) \n * |*| *' },
     ];
     const WEIGHTS = { common: 60, uncommon: 25, rare: 10, epic: 4, legendary: 1 };
-    
-    function mulberry32(seed) {
-      return function() { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
-    }
-    
+    function mulberry32(seed) { return function() { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
     window.hatchPet = function() {
       const seed = Math.floor(Math.random() * 0xFFFFFFFF);
       const rng = mulberry32(seed);
@@ -518,15 +642,14 @@
       const rarityColors = { common: 'var(--rarity-common)', uncommon: 'var(--rarity-uncommon)', rare: 'var(--rarity-rare)', epic: 'var(--rarity-epic)', legendary: 'var(--rarity-legendary)' };
       const color = rarityColors[chosen.rarity];
       const el = document.getElementById('gacha-result');
-      let statsHtml = '<div class="pet-stats" style="margin-top:16px; text-align:left;">';
+      let statsHtml = '<div style="margin-top:16px; text-align:left;">';
       for (const [k,v] of Object.entries(stats)) statsHtml += `<div style="display:flex; justify-content:space-between;"><span style="color:var(--text-muted);">${k}</span><span style="color:${color};">${v}</span></div>`;
       statsHtml += '</div>';
       const shinyHtml = isShiny ? '<div class="shiny-badge"><i class="fas fa-star"></i> SHINY!</div>' : '';
-      el.innerHTML = `${shinyHtml}<div class="pet-name" style="color:${color};">${chosen.name}</div><div style="color:${color}; font-size:0.8rem; letter-spacing:2px;">[${chosen.rarity.toUpperCase()}]</div><pre class="pet-sprite" style="color:${color};">${chosen.sprite}</pre>${statsHtml}`;
+      el.innerHTML = `${shinyHtml}<div class="pet-name" style="color:${color};">${chosen.name}</div><div style="color:${color}; font-size:0.8rem;">[${chosen.rarity.toUpperCase()}]</div><pre class="pet-sprite" style="color:${color};">${chosen.sprite}</pre>${statsHtml}`;
       el.style.borderColor = isShiny ? 'var(--rarity-legendary)' : color;
     };
-    
-    // Smooth scroll
+    // smooth scroll
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
         e.preventDefault();
@@ -534,8 +657,7 @@
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     });
-    
-    console.log('%c🐾 TermiPet • Dark/Light Ready', 'font-size:16px; color:#22d3ee');
+    console.log('%c🐾 TermiPet • Premium Dark/Light + QR Ready', 'color:#22d3ee; font-size:14px');
   </script>
 </body>
 </html>
