@@ -1,486 +1,1285 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>TermiPet 🐾 — Your Terminal Companion</title>
-    <style>
-          :root {
-                  --bg: #0d1117;
-                  --bg2: #161b22;
-                  --bg3: #21262d;
-                  --border: #30363d;
-                  --text: #e6edf3;
-                  --muted: #8b949e;
-                  --green: #3fb950;
-                  --cyan: #79c0ff;
-                  --yellow: #e3b341;
-                  --magenta: #d2a8ff;
-                  --red: #ff7b72;
-                  --white: #f0f6fc;
-          }
-          * { box-sizing: border-box; margin: 0; padding: 0; }
-          body {
-                  background: var(--bg);
-                  color: var(--text);
-                  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-                  line-height: 1.6;
-          }
-          a { color: var(--cyan); text-decoration: none; }
-          a:hover { text-decoration: underline; }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="TermiPet — Your educational terminal companion with gacha-style pets. Hatch, raise, and interact!">
+  <title>TermiPet 🐾 — Your Terminal Companion</title>
+  
+  <!-- Premium Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      /* Base Theme */
+      --bg-primary: #0a0e17;
+      --bg-secondary: #111827;
+      --bg-tertiary: #1f2937;
+      --bg-card: #1e293b;
+      --border-subtle: #334155;
+      --border-focus: #64748b;
+      
+      /* Text Colors */
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      /* Accent Colors */
+      --accent-cyan: #22d3ee;
+      --accent-cyan-glow: rgba(34, 211, 238, 0.15);
+      --accent-purple: #a78bfa;
+      --accent-purple-glow: rgba(167, 139, 250, 0.15);
+      --accent-green: #34d399;
+      --accent-yellow: #fbbf24;
+      --accent-pink: #f472b6;
+      --accent-red: #f87171;
+      
+      /* Rarity Colors */
+      --rarity-common: #94a3b8;
+      --rarity-uncommon: #34d399;
+      --rarity-rare: #60a5fa;
+      --rarity-epic: #a78bfa;
+      --rarity-legendary: #fbbf24;
+      
+      /* Effects */
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
+      --shadow-glow: 0 0 30px rgba(34, 211, 238, 0.2);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-          /* HERO */
-          .hero {
-                  background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
-                  border-bottom: 1px solid var(--border);
-                  padding: 80px 20px 60px;
-                  text-align: center;
-                  position: relative;
-                  overflow: hidden;
-          }
-          .hero::before {
-                  content: '';
-                  position: absolute;
-                  inset: 0;
-                  background: radial-gradient(ellipse at 50% 0%, rgba(121,192,255,0.08) 0%, transparent 60%);
-          }
-          .hero-emoji { font-size: 64px; display: block; margin-bottom: 16px; animation: bounce 2s infinite; }
-          @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-          .hero h1 { font-size: 3rem; font-weight: 700; color: var(--white); margin-bottom: 12px; }
-          .hero h1 span { color: var(--cyan); }
-          .hero p { font-size: 1.2rem; color: var(--muted); max-width: 600px; margin: 0 auto 32px; }
-          .badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; }
-          .badge {
-                  background: var(--bg3);
-                  border: 1px solid var(--border);
-                  border-radius: 20px;
-                  padding: 4px 14px;
-                  font-size: 0.8rem;
-                  font-weight: 600;
-          }
-          .badge.green { color: var(--green); border-color: var(--green); }
-          .badge.cyan { color: var(--cyan); border-color: var(--cyan); }
-          .badge.yellow { color: var(--yellow); border-color: var(--yellow); }
-          .cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-          .btn {
-                  padding: 12px 28px;
-                  border-radius: 8px;
-                  font-size: 1rem;
-                  font-weight: 600;
-                  cursor: pointer;
-                  border: 1px solid transparent;
-                  transition: all 0.2s;
-          }
-          .btn-primary { background: var(--cyan); color: #0d1117; }
-          .btn-primary:hover { background: #a5d6ff; text-decoration: none; }
-          .btn-secondary { background: transparent; color: var(--text); border-color: var(--border); }
-          .btn-secondary:hover { background: var(--bg3); text-decoration: none; }
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    html { scroll-behavior: smooth; }
+    
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
 
-          /* TERMINAL DEMO */
-          .terminal-section { padding: 60px 20px; max-width: 900px; margin: 0 auto; }
-          .terminal {
-                  background: #0d1117;
-                  border: 1px solid var(--border);
-                  border-radius: 12px;
-                  overflow: hidden;
-                  box-shadow: 0 16px 48px rgba(0,0,0,0.4);
-          }
-          .terminal-bar {
-                  background: var(--bg3);
-                  padding: 10px 16px;
-                  display: flex;
-                  align-items: center;
-                  gap: 8px;
-                  border-bottom: 1px solid var(--border);
-          }
-          .dot { width: 12px; height: 12px; border-radius: 50%; }
-          .dot.red { background: #ff5f57; }
-          .dot.yellow { background: #febc2e; }
-          .dot.green { background: #28c840; }
-          .terminal-title { color: var(--muted); font-size: 0.85rem; margin-left: 8px; font-family: monospace; }
-          .terminal-body { padding: 24px; font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace; font-size: 0.9rem; line-height: 1.8; }
-          .prompt { color: var(--green); }
-          .cmd { color: var(--white); }
-          .out-box {
-                  border: 1px solid;
-                  border-radius: 4px;
-                  padding: 2px 8px;
-                  display: inline-block;
-                  margin: 2px 0;
-          }
-          .out-common { color: #e6edf3; border-color: #30363d; }
-          .out-uncommon { color: #3fb950; border-color: #3fb950; }
-          .out-rare { color: #79c0ff; border-color: #79c0ff; }
-          .out-epic { color: #d2a8ff; border-color: #d2a8ff; }
-          .out-legendary { color: #e3b341; border-color: #e3b341; }
-          .stat-bar { color: var(--cyan); }
-          .stat-label { color: var(--muted); display: inline-block; width: 130px; }
-          .shiny { color: var(--yellow); }
-          .dim { color: var(--muted); }
+    a { color: var(--accent-cyan); text-decoration: none; transition: var(--transition); }
+    a:hover { color: var(--text-primary); text-decoration: none; }
+    
+    code, pre, .mono { 
+      font-family: 'JetBrains Mono', 'Fira Code', monospace; 
+      font-size: 0.9em;
+    }
 
-          /* FEATURES */
-          .features { padding: 60px 20px; background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-          .features-inner { max-width: 900px; margin: 0 auto; }
-          .section-title { font-size: 1.8rem; font-weight: 700; color: var(--white); text-align: center; margin-bottom: 40px; }
-          .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-          .feature-card {
-                  background: var(--bg);
-                  border: 1px solid var(--border);
-                  border-radius: 10px;
-                  padding: 24px;
-                  transition: border-color 0.2s;
-          }
-          .feature-card:hover { border-color: var(--cyan); }
-          .feature-icon { font-size: 2rem; margin-bottom: 12px; }
-          .feature-card h3 { font-size: 1rem; font-weight: 600; color: var(--white); margin-bottom: 8px; }
-          .feature-card p { font-size: 0.9rem; color: var(--muted); }
+    /* ===== UTILITIES ===== */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 80px 0; }
+    .section-title {
+      font-size: 2.25rem;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 3rem;
+      background: linear-gradient(135deg, var(--text-primary), var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      position: relative;
+    }
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+      border-radius: 2px;
+    }
 
-          /* SPECIES */
-          .species-section { padding: 60px 20px; max-width: 900px; margin: 0 auto; }
-          .rarity-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-          .rarity-table th { padding: 12px 16px; text-align: left; background: var(--bg3); border-bottom: 2px solid var(--border); font-size: 0.85rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
-          .rarity-table td { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
-          .rarity-table tr:last-child td { border-bottom: none; }
-          .rarity-badge {
-                  display: inline-block;
-                  padding: 2px 10px;
-                  border-radius: 12px;
-                  font-size: 0.75rem;
-                  font-weight: 700;
-                  border: 1px solid;
-          }
-          .r-common { color: #e6edf3; border-color: #30363d; background: rgba(48,54,61,0.3); }
-          .r-uncommon { color: #3fb950; border-color: #3fb950; background: rgba(63,185,80,0.1); }
-          .r-rare { color: #79c0ff; border-color: #79c0ff; background: rgba(121,192,255,0.1); }
-          .r-epic { color: #d2a8ff; border-color: #d2a8ff; background: rgba(210,168,255,0.1); }
-          .r-legendary { color: #e3b341; border-color: #e3b341; background: rgba(227,179,65,0.1); }
+    /* ===== HERO SECTION ===== */
+    .hero {
+      position: relative;
+      padding: 120px 24px 100px;
+      text-align: center;
+      background: 
+        radial-gradient(ellipse at top, rgba(34, 211, 238, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse at bottom, rgba(167, 139, 250, 0.06) 0%, transparent 60%),
+        linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+      overflow: hidden;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 20% 30%, rgba(167, 139, 250, 0.03) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(34, 211, 238, 0.03) 0%, transparent 40%);
+      pointer-events: none;
+    }
+    
+    .hero-emoji {
+      font-size: 5rem;
+      display: inline-block;
+      margin-bottom: 24px;
+      animation: float 3s ease-in-out infinite;
+      text-shadow: 0 0 30px var(--accent-cyan-glow);
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-12px) rotate(2deg); }
+    }
+    
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 800;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      max-width: 680px;
+      margin: 0 auto 32px;
+      line-height: 1.8;
+    }
+    
+    .badges {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+    
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+    
+    .badge:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent-cyan);
+      box-shadow: var(--shadow-glow);
+    }
+    
+    .badge.green { color: var(--accent-green); border-color: var(--accent-green); }
+    .badge.cyan { color: var(--accent-cyan); border-color: var(--accent-cyan); }
+    .badge.yellow { color: var(--accent-yellow); border-color: var(--accent-yellow); }
+    .badge.purple { color: var(--accent-purple); border-color: var(--accent-purple); }
+    
+    .cta-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+      opacity: 0;
+      transition: var(--transition);
+      z-index: -1;
+    }
+    
+    .btn:hover::before { opacity: 1; }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-cyan), #0ea5e9);
+      color: #0f172a;
+      box-shadow: 0 4px 20px rgba(34, 211, 238, 0.3);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(34, 211, 238, 0.5);
+    }
+    
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-primary);
+      border: 2px solid var(--border-subtle);
+    }
+    
+    .btn-secondary:hover {
+      background: var(--bg-card);
+      border-color: var(--accent-cyan);
+      transform: translateY(-2px);
+    }
 
-          /* INSTALL */
-          .install-section { padding: 60px 20px; background: var(--bg2); border-top: 1px solid var(--border); }
-          .install-inner { max-width: 700px; margin: 0 auto; }
-          .code-block {
-                  background: var(--bg);
-                  border: 1px solid var(--border);
-                  border-radius: 8px;
-                  padding: 20px 24px;
-                  font-family: monospace;
-                  font-size: 0.9rem;
-                  margin: 16px 0;
-                  overflow-x: auto;
-          }
-          .code-block .comment { color: var(--muted); }
-          .code-block .dollar { color: var(--green); }
-          .cmd-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-          .cmd-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
-          .cmd-table td:first-child { font-family: monospace; color: var(--cyan); width: 200px; }
-          .cmd-table td:last-child { color: var(--muted); }
+    /* ===== TERMINAL DEMO ===== */
+    .terminal-section { background: var(--bg-secondary); }
+    
+    .terminal {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+    }
+    
+    .terminal::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(34, 211, 238, 0.03), transparent 30%);
+      pointer-events: none;
+    }
+    
+    .terminal-bar {
+      background: var(--bg-tertiary);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    
+    .terminal-dots { display: flex; gap: 6px; }
+    .terminal-dot {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .terminal-dot.red { background: #ff5f57; }
+    .terminal-dot.yellow { background: #febc2e; }
+    .terminal-dot.green { background: #28c840; }
+    
+    .terminal-title {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-left: 8px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    
+    .terminal-body {
+      padding: 28px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      line-height: 2;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .prompt { color: var(--accent-green); font-weight: 600; }
+    .cmd { color: var(--text-primary); }
+    .dim { color: var(--text-dim); }
+    
+    .out-box {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 6px;
+      margin: 4px 0;
+      font-weight: 600;
+      border: 1px solid;
+      background: rgba(30, 41, 59, 0.5);
+    }
+    
+    .out-common { color: var(--rarity-common); border-color: var(--border-subtle); }
+    .out-uncommon { color: var(--rarity-uncommon); border-color: var(--rarity-uncommon); }
+    .out-rare { color: var(--rarity-rare); border-color: var(--rarity-rare); }
+    .out-epic { color: var(--rarity-epic); border-color: var(--rarity-epic); }
+    .out-legendary { color: var(--rarity-legendary); border-color: var(--rarity-legendary); }
+    
+    .stat-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 6px 0;
+      font-size: 0.9rem;
+    }
+    
+    .stat-label {
+      color: var(--text-muted);
+      min-width: 130px;
+      font-weight: 500;
+    }
+    
+    .stat-bar {
+      flex: 1;
+      height: 8px;
+      background: var(--bg-tertiary);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .stat-bar::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+      width: var(--width, 50%);
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+    
+    .stat-val {
+      color: var(--text-secondary);
+      font-weight: 600;
+      min-width: 30px;
+      text-align: right;
+    }
+    
+    .blink {
+      animation: blink 1s step-end infinite;
+    }
+    
+    @keyframes blink { 50% { opacity: 0; } }
 
-          /* FOOTER */
-          footer {
-                  text-align: center;
-                  padding: 40px 20px;
-                  border-top: 1px solid var(--border);
-                  color: var(--muted);
-                  font-size: 0.85rem;
-          }
-          footer a { color: var(--cyan); }
+    /* ===== FEATURES GRID ===== */
+    .features {
+      background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 2rem;
+    }
+    
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 28px;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.05), transparent 40%);
+      opacity: 0;
+      transition: var(--transition);
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent-cyan);
+      box-shadow: var(--shadow-glow);
+    }
+    
+    .feature-card:hover::before { opacity: 1; }
+    
+    .feature-icon {
+      font-size: 2.25rem;
+      margin-bottom: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 60px;
+      background: var(--bg-tertiary);
+      border-radius: 14px;
+      border: 1px solid var(--border-subtle);
+    }
+    
+    .feature-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+    
+    .feature-card p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
 
-          /* GACHA DEMO */
-          .gacha-section { padding: 60px 20px; max-width: 900px; margin: 0 auto; text-align: center; }
-          #gacha-result {
-                  margin: 32px auto;
-                  max-width: 400px;
-                  background: var(--bg2);
-                  border: 1px solid var(--border);
-                  border-radius: 12px;
-                  padding: 32px;
-                  font-family: monospace;
-                  min-height: 160px;
-                  display: flex;
-                  flex-direction: column;
-                  align-items: center;
-                  justify-content: center;
-                  transition: all 0.3s;
-          }
-          .pet-name { font-size: 1.5rem; font-weight: 700; margin: 8px 0; }
-          .pet-sprite { font-size: 2.5rem; margin: 8px 0; letter-spacing: 2px; }
-          .pet-stats { text-align: left; margin-top: 16px; font-size: 0.8rem; width: 100%; }
-          .stat-row { display: flex; justify-content: space-between; margin: 4px 0; }
-          .stat-name { color: var(--muted); }
-          .stat-val { color: var(--cyan); }
-          @media (max-width: 600px) {
-                  .hero h1 { font-size: 2rem; }
-                  .hero-emoji { font-size: 48px; }
-          }
-        </style>
-  </head>
-  <body>
+    /* ===== SPECIES TABLE ===== */
+    .species-section { max-width: 900px; margin: 0 auto; }
+    
+    .rarity-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 24px;
+      background: var(--bg-card);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+    }
+    
+    .rarity-table th {
+      padding: 16px 20px;
+      text-align: left;
+      background: var(--bg-tertiary);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      border-bottom: 2px solid var(--border-subtle);
+    }
+    
+    .rarity-table td {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 0.95rem;
+    }
+    
+    .rarity-table tr:last-child td { border-bottom: none; }
+    .rarity-table tr:hover { background: rgba(34, 211, 238, 0.03); }
+    
+    .rarity-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border: 1px solid;
+    }
+    
+    .r-common { color: var(--rarity-common); border-color: var(--border-subtle); }
+    .r-uncommon { color: var(--rarity-uncommon); border-color: var(--rarity-uncommon); background: rgba(52, 211, 153, 0.1); }
+    .r-rare { color: var(--rarity-rare); border-color: var(--rarity-rare); background: rgba(96, 165, 250, 0.1); }
+    .r-epic { color: var(--rarity-epic); border-color: var(--rarity-epic); background: rgba(167, 139, 250, 0.1); }
+    .r-legendary { 
+      color: var(--rarity-legendary); 
+      border-color: var(--rarity-legendary); 
+      background: rgba(251, 191, 36, 0.15);
+      animation: shimmer 2s linear infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
+      50% { box-shadow: 0 0 0 8px rgba(251, 191, 36, 0.1); }
+      100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
+    }
+    
+    .shiny-note {
+      margin-top: 20px;
+      padding: 14px 20px;
+      background: rgba(251, 191, 36, 0.1);
+      border: 1px solid var(--rarity-legendary);
+      border-radius: 10px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+    
+    .shiny-note strong { color: var(--rarity-legendary); }
 
-    <!-- HERO -->
-    <section class="hero">
-        <span class="hero-emoji">🐾</span>span>
-        <h1>Termi<span>Pet</span></h1>
-      <p>An educational, themeable terminal companion framework with a gacha-style pet system. Hatch, raise, and interact with your very own terminal pet!</p>
+    /* ===== GACHA DEMO ===== */
+    .gacha-section {
+      background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      text-align: center;
+    }
+    
+    #gacha-result {
+      margin: 40px auto;
+      max-width: 480px;
+      background: var(--bg-card);
+      border: 2px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 32px;
+      font-family: 'JetBrains Mono', monospace;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    #gacha-result::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(34, 211, 238, 0.1), transparent 70%);
+      opacity: 0;
+      transition: var(--transition);
+    }
+    
+    #gacha-result.active::before { opacity: 1; animation: pulse 1.5s ease-out; }
+    
+    @keyframes pulse {
+      0% { transform: scale(0.8); opacity: 0.5; }
+      100% { transform: scale(1.2); opacity: 0; }
+    }
+    
+    .pet-name {
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin: 12px 0 4px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    
+    .pet-sprite {
+      font-size: 1.5rem;
+      margin: 16px 0;
+      line-height: 1.4;
+      white-space: pre;
+      text-shadow: 0 0 20px currentColor;
+    }
+    
+    .pet-stats {
+      width: 100%;
+      margin-top: 20px;
+      text-align: left;
+      font-size: 0.85rem;
+    }
+    
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 5px 0;
+      padding: 4px 0;
+      border-bottom: 1px dashed var(--border-subtle);
+    }
+    
+    .stat-row:last-child { border-bottom: none; }
+    
+    .stat-name { color: var(--text-muted); }
+    .stat-val { color: var(--accent-cyan); font-weight: 600; }
+    
+    .shiny-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 16px;
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(251, 191, 36, 0.05));
+      border: 1px solid var(--rarity-legendary);
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--rarity-legendary);
+      margin-bottom: 12px;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+    
+    @keyframes glow {
+      from { box-shadow: 0 0 10px rgba(251, 191, 36, 0.3); }
+      to { box-shadow: 0 0 25px rgba(251, 191, 36, 0.6); }
+    }
+
+    /* ===== INSTALL SECTION ===== */
+    .install-section { background: var(--bg-secondary); }
+    .install-inner { max-width: 750px; margin: 0 auto; }
+    
+    .code-block {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 24px 28px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      margin: 20px 0;
+      overflow-x: auto;
+      position: relative;
+    }
+    
+    .code-block::before {
+      content: 'bash';
+      position: absolute;
+      top: 8px;
+      right: 16px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .code-comment { color: var(--text-dim); }
+    .code-cmd { color: var(--accent-green); }
+    .code-path { color: var(--accent-cyan); }
+    
+    .cmd-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 24px;
+      background: var(--bg-card);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+    }
+    
+    .cmd-table td {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 0.95rem;
+    }
+    
+    .cmd-table tr:last-child td { border-bottom: none; }
+    .cmd-table tr:hover { background: rgba(34, 211, 238, 0.03); }
+    
+    .cmd-table td:first-child {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent-cyan);
+      font-weight: 600;
+      width: 220px;
+    }
+    
+    .cmd-table td:last-child { color: var(--text-muted); }
+
+    /* ===== PREMIUM FOOTER ===== */
+    footer {
+      background: linear-gradient(180deg, var(--bg-secondary) 0%, #070a11 100%);
+      border-top: 1px solid var(--border-subtle);
+      padding: 60px 24px 40px;
+      text-align: center;
+      position: relative;
+    }
+    
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+    }
+    
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 24px;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    
+    .footer-brand span {
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .footer-credit {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin: 20px 0;
+      font-weight: 500;
+    }
+    
+    .footer-credit strong {
+      color: var(--accent-cyan);
+      font-weight: 700;
+    }
+    
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin: 24px 0;
+      flex-wrap: wrap;
+    }
+    
+    .footer-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      transition: var(--transition);
+    }
+    
+    .footer-link:hover {
+      background: var(--bg-tertiary);
+      border-color: var(--accent-cyan);
+      color: var(--text-primary);
+      transform: translateY(-2px);
+    }
+    
+    .footer-link i { font-size: 1.1rem; }
+    
+    .payment-section {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-subtle);
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .payment-title {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+    
+    .payment-options {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    
+    .payment-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 16px 20px;
+      min-width: 180px;
+      transition: var(--transition);
+    }
+    
+    .payment-card:hover {
+      border-color: var(--accent-green);
+      transform: translateY(-3px);
+    }
+    
+    .payment-card h4 {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+    }
+    
+    .payment-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    
+    .payment-email {
+      display: block;
+      padding: 8px 12px;
+      background: var(--bg-tertiary);
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--accent-cyan);
+      margin: 8px 0;
+      word-break: break-all;
+    }
+    
+    .qr-placeholder {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto;
+      background: var(--bg-tertiary);
+      border: 2px dashed var(--border-subtle);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+    
+    .qr-placeholder i { font-size: 2rem; opacity: 0.6; }
+    
+    .copyright {
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-subtle);
+      color: var(--text-dim);
+      font-size: 0.9rem;
+    }
+    
+    .copyright a { color: var(--accent-cyan); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .hero { padding: 90px 20px 70px; }
+      .hero-emoji { font-size: 4rem; }
+      .hero h1 { font-size: 2.5rem; }
+      .section { padding: 60px 0; }
+      .section-title { font-size: 1.8rem; }
+      .terminal-body { padding: 20px; font-size: 0.9rem; }
+      .features-grid { grid-template-columns: 1fr; }
+      .cta-buttons, .footer-links, .payment-options { flex-direction: column; align-items: center; }
+      .btn { width: 100%; max-width: 300px; justify-content: center; }
+    }
+
+    /* ===== ACCESSIBILITY ===== */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* ===== SELECTION ===== */
+    ::selection {
+      background: var(--accent-cyan-glow);
+      color: var(--text-primary);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✨ HERO SECTION -->
+  <section class="hero">
+    <div class="container">
+      <span class="hero-emoji" aria-hidden="true">🐾</span>
+      <h1>Termi<span>Pet</span></h1>
+      <p>An educational, themeable terminal companion framework with a gacha-style pet system. Hatch, raise, and interact with your very own terminal pet — all from your command line.</p>
+      
       <div class="badges">
-          <span class="badge yellow">MIT License</span>
-          <span class="badge green">Node.js ≥14</span>
-          <span class="badge cyan">Open Source</span>
-          <span class="badge" style="color:#d2a8ff;border-color:#d2a8ff">18 Species</span>
-      </div>div>
+        <span class="badge yellow">✨ MIT License</span>
+        <span class="badge green">🟢 Node.js ≥14</span>
+        <span class="badge cyan">🔓 Open Source</span>
+        <span class="badge purple">🎲 18+ Species</span>
+      </div>
+      
       <div class="cta-buttons">
-          <a class="btn btn-primary" href="https://github.com/anshmajumdar121/termipet">⭐ View on GitHub</a>a>
-          <a class="btn btn-secondary" href="#install">Get Started →</a>a>
-      </div>div>
-    </section>section>
-  
-  <!-- TERMINAL DEMO -->
-  <section class="terminal-section">
-    <div class="terminal">
+        <a class="btn btn-primary" href="https://github.com/anshmajumdar121/termipet" target="_blank" rel="noopener">
+          <span>⭐</span> View on GitHub
+        </a>
+        <a class="btn btn-secondary" href="#install">
+          Get Started →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 💻 TERMINAL DEMO -->
+  <section class="terminal-section section">
+    <div class="container">
+      <div class="terminal">
         <div class="terminal-bar">
-              <div class="dot red"></div>div><div class="dot yellow"></div>div><div class="dot green"></div>div>
-              <span class="terminal-title">bash — termipet</span>
-        </div>div>
-        <div class="terminal-body">
-              <div><span class="prompt">$ </span><span class="cmd">termipet hatch</span></div>
-              <div class="dim">🥚 Hatching your TermiPet...</div>
-              <br>
-              <div><span class="out-box out-epic">  Crystaldrake    </span>span></div>
-              <div><span class="out-box out-epic">  [RARE]          </span>span></div>
-              <br>
-              <div style="color:#79c0ff">  &lt;*.*&gt;</div>
-              <div style="color:#79c0ff">   /|\</div>
-              <div style="color:#79c0ff">  // \\</div>
-              <br>
-              <div><span class="dim">  Stats:</span>span></div>
-              <div><span class="stat-label">  DEBUGGING    </span>span><span class="stat-bar">████████░░</span>span><span class="dim"> 82</span>span></div>
-              <div><span class="stat-label">  PATIENCE     </span>span><span class="stat-bar">██████░░░░</span>span><span class="dim"> 61</span>span></div>
-              <div><span class="stat-label">  CHAOS        </span>span><span class="stat-bar">█████████░</span>span><span class="dim"> 93</span>span></div>
-              <div><span class="stat-label">  WISDOM       </span>span><span class="stat-bar">███████░░░</span>span><span class="dim"> 74</span>span></div>
-              <div><span class="stat-label">  SNARK        </span>span><span class="stat-bar">████░░░░░░</span>span><span class="dim"> 47</span>span></div>
-              <br>
-              <div><span class="prompt">$ </span>span><span class="cmd">termipet feed</span>span></div>
-              <div class="dim">🍖 You fed Crystaldrake! Nom nom nom~</div>
-              <br>
-              <div><span class="prompt">$ </span>span><span class="cmd">termipet play</span>span></div>
-              <div class="dim">🎮 Crystaldrake *does a flip*</div>
-              <br>
-              <div><span class="prompt">$ </span>span><span class="blink">▌</span>span></div>
-        </div>
-    </div>
-  </section>section>
-  
-  <!-- FEATURES -->
-  <section class="features">
-    <div class="features-inner">
-          <h2 class="section-title">Why TermiPet?</h2>h2>
-          <div class="features-grid">
-                  <div class="feature-card">
-                            <div class="feature-icon">🎲</div>
-                            <h3>Deterministic Gacha</h3>
-                          <p>Your pet is seeded from your user ID using Mulberry32 PRNG — same user always hatches the same species, but unique to you.</p>
-                  </div>
-                <div class="feature-card">
-                        <div class="feature-icon">🎓</div>
-                        <h3>Educational</h3>
-                        <p>Learn PRNG algorithms, CLI design, event systems, and theming through a fun, interactive project.</p>
-                </div>
-                <div class="feature-card">
-                        <div class="feature-icon">🎨</div>
-                        <h3>Fully Themeable</h3>
-                        <p>Copy <code>themes/example-theme.js</code> and customize colors, borders, stat bars, and messages.</p>
-                </div>
-                <div class="feature-card">
-                        <div class="feature-icon">✨</div>
-                        <h3>Shiny Variants</h3>
-                        <p>Every species has a 1% shiny chance, completely independent of rarity. A Shiny Legendary Nebulynx = 0.01%!</p>
-                </div>
-                <div class="feature-card">
-                        <div class="feature-icon">🏗️</div>
-                        <h3>Clean Architecture</h3>
-                        <p>Modular structure with separate PRNG, Hatchery, Events, Renderer, and CLI layers. Easy to extend.</p>
-                </div>
-                <div class="feature-card">
-                        <div class="feature-icon">🖥️</div>
-                        <h3>Pure Terminal</h3>
-                        <p>No Electron, no browser — just Node.js and chalk. Lives where you work: the terminal.</p>
-                </div>
+          <div class="terminal-dots">
+            <div class="terminal-dot red"></div>
+            <div class="terminal-dot yellow"></div>
+            <div class="terminal-dot green"></div>
           </div>
+          <span class="terminal-title">bash — termipet</span>
+        </div>
+        <div class="terminal-body">
+          <div><span class="prompt">$ </span><span class="cmd">termipet hatch</span></div>
+          <div class="dim">🥚 Hatching your TermiPet...</div>
+          <br>
+          <div><span class="out-box out-epic">Crystaldrake</span></div>
+          <div><span class="out-box out-epic">[EPIC]</span></div>
+          <br>
+          <div style="color:var(--rarity-epic); white-space: pre;">  &lt;*.*&gt;
+   /|\
+  // \\</div>
+          <br>
+          <div class="dim">Stats:</div>
+          <div class="stat-row">
+            <span class="stat-label">DEBUGGING</span>
+            <div class="stat-bar" style="--width: 82%"></div>
+            <span class="stat-val">82</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">PATIENCE</span>
+            <div class="stat-bar" style="--width: 61%"></div>
+            <span class="stat-val">61</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">CHAOS</span>
+            <div class="stat-bar" style="--width: 93%"></div>
+            <span class="stat-val">93</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">WISDOM</span>
+            <div class="stat-bar" style="--width: 74%"></div>
+            <span class="stat-val">74</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">SNARK</span>
+            <div class="stat-bar" style="--width: 47%"></div>
+            <span class="stat-val">47</span>
+          </div>
+          <br>
+          <div><span class="prompt">$ </span><span class="cmd">termipet feed</span></div>
+          <div class="dim">🍖 You fed Crystaldrake! Nom nom nom~</div>
+          <br>
+          <div><span class="prompt">$ </span><span class="cmd">termipet play</span></div>
+          <div class="dim">🎮 Crystaldrake *does a flip*</div>
+          <br>
+          <div><span class="prompt">$ </span><span class="blink">▌</span></div>
+        </div>
+      </div>
     </div>
-  </section>section>
-  
-  <!-- SPECIES -->
-  <section class="species-section">
-    <h2 class="section-title">Species &amp; Rarity</h2>
-    <table class="rarity-table">
+  </section>
+
+  <!-- 🎯 FEATURES -->
+  <section class="features section">
+    <div class="container">
+      <h2 class="section-title">Why TermiPet?</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🎲</div>
+          <h3>Deterministic Gacha</h3>
+          <p>Your pet is seeded from your user ID using Mulberry32 PRNG — same user always hatches the same species, but unique to you.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎓</div>
+          <h3>Educational</h3>
+          <p>Learn PRNG algorithms, CLI design, event systems, and theming through a fun, interactive project.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎨</div>
+          <h3>Fully Themeable</h3>
+          <p>Copy <code>themes/example-theme.js</code> and customize colors, borders, stat bars, and messages.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">✨</div>
+          <h3>Shiny Variants</h3>
+          <p>Every species has a 1% shiny chance, completely independent of rarity. A Shiny Legendary Nebulynx = 0.01%!</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🏗️</div>
+          <h3>Clean Architecture</h3>
+          <p>Modular structure with separate PRNG, Hatchery, Events, Renderer, and CLI layers. Easy to extend.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🖥️</div>
+          <h3>Pure Terminal</h3>
+          <p>No Electron, no browser — just Node.js and chalk. Lives where you work: the terminal.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 🐉 SPECIES & RARITY -->
+  <section class="section">
+    <div class="container species-section">
+      <h2 class="section-title">Species & Rarity</h2>
+      <table class="rarity-table">
         <thead>
-                <tr>
-                          <th>Rarity</th>
-                <th>Chance</th>
-                <th>Species</th>
-                </tr>
+          <tr>
+            <th>Rarity</th>
+            <th>Chance</th>
+            <th>Species</th>
+          </tr>
         </thead>
         <tbody>
-                <tr>
-                          <td><span class="rarity-badge r-common">COMMON</span></td>
-            <td style="color:var(--muted)">60%</td>
+          <tr>
+            <td><span class="rarity-badge r-common">Common</span></td>
+            <td style="color:var(--text-muted)">60%</td>
             <td>Pebblecrab, Dustbunny, Mossfrog, Twigling, Dewdrop, Puddlefish</td>
-                </tr>
-          <tr>
-                    <td><span class="rarity-badge r-uncommon">UNCOMMON</span>span></td>td>
-                    <td style="color:var(--muted)">25%</td>td>
-                    <td>Cloudferret, Gustowl, Bramblebear, Thornfox</td>td>
           </tr>
-                <tr>
-                          <td><span class="rarity-badge r-rare">RARE</span>span></td>
-            <td style="color:var(--muted)">10%</td>
+          <tr>
+            <td><span class="rarity-badge r-uncommon">Uncommon</span></td>
+            <td style="color:var(--text-muted)">25%</td>
+            <td>Cloudferret, Gustowl, Bramblebear, Thornfox</td>
+          </tr>
+          <tr>
+            <td><span class="rarity-badge r-rare">Rare</span></td>
+            <td style="color:var(--text-muted)">10%</td>
             <td>Crystaldrake, Deepstag, Lavapup</td>
-                </tr>
-          <tr>
-                    <td><span class="rarity-badge r-epic">EPIC</span>span></td>td>
-                    <td style="color:var(--muted)">4%</td>td>
-                    <td>Stormwyrm, Voidcat, Aetherling</td>td>
           </tr>
-                <tr>
-                          <td><span class="rarity-badge r-legendary">LEGENDARY</span>span></td>
-            <td style="color:var(--muted)">1%</td>
-            <td><span style="color:var(--yellow)">✨</span>span> Cosmoshale, Nebulynx</td>
-                </tr>
+          <tr>
+            <td><span class="rarity-badge r-epic">Epic</span></td>
+            <td style="color:var(--text-muted)">4%</td>
+            <td>Stormwyrm, Voidcat, Aetherling</td>
+          </tr>
+          <tr>
+            <td><span class="rarity-badge r-legendary">Legendary</span></td>
+            <td style="color:var(--text-muted)">1%</td>
+            <td><span style="color:var(--rarity-legendary)">✨</span> Cosmoshale, Nebulynx</td>
+          </tr>
         </tbody>
-    </table>table>
-    <p style="margin-top:16px;color:var(--muted);font-size:0.85rem;text-align:center">Plus a <strong style="color:var(--yellow)">1% shiny chance</strong>strong> per roll, independent of rarity!</p>
-  </section>section>
-  
-  <!-- GACHA DEMO -->
-  <section class="gacha-section" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:60px 20px;margin:0;max-width:100%">
-    <div style="max-width:600px;margin:0 auto">
-        <h2 class="section-title">Try the Gacha!</h2>
-        <p style="color:var(--muted);margin-bottom:24px">Click to simulate hatching a TermiPet (browser demo — no Node.js needed)</p>
-        <div id="gacha-result">
-              <span style="color:var(--muted);font-size:0.9rem">Click the button to hatch your pet!</span>span>
-        </div>
-        <button class="btn btn-primary" onclick="hatchPet()" style="font-size:1rem;padding:14px 40px;margin-top:8px">🥚 Hatch a Pet!</button>button>
+      </table>
+      <div class="shiny-note">
+        Plus a <strong>1% shiny chance</strong> per roll, completely independent of rarity!
+      </div>
     </div>
-  </section>section>
-  
-  <!-- INSTALL -->
-  <section class="install-section" id="install">
-    <div class="install-inner">
-        <h2 class="section-title" style="text-align:left">Get Started</h2>
-        <div class="code-block">
-              <span class="comment"># Clone and install</span>span><br>
-              <span class="dollar">$ </span>span>git clone https://github.com/anshmajumdar121/termipet.git<br>
-              <span class="dollar">$ </span>span>cd termipet<br>
-              <span class="dollar">$ </span>span>npm install &amp;&amp; npm link<br>
-              <br>
-              <span class="comment"># Hatch your pet!</span>span><br>
-              <span class="dollar">$ </span>span>termipet hatch
-        </div>
-        <h3 style="color:var(--white);margin:32px 0 16px;font-size:1.1rem">Commands</h3>
-        <table class="cmd-table">
-              <tr><td>termipet hatch</td>td><td>Hatch your first TermiPet (deterministic — unique to you!)</td>td></tr>
-              <tr><td>termipet show</td><td>Display your current pet with ASCII art</td></tr>
-              <tr><td>termipet watch</td>td><td>Watch your pet animate live in the terminal</td>td></tr>
-              <tr><td>termipet stats</td><td>Show detailed stats: DEBUGGING, PATIENCE, CHAOS, WISDOM, SNARK</td></tr>
-              <tr><td>termipet feed</td>td><td>Feed your pet 🍖</td>td></tr>
-              <tr><td>termipet play</td><td>Play with your pet 🎮</td></tr>
-        </table>table>
+  </section>
+
+  <!-- 🎮 GACHA DEMO -->
+  <section class="gacha-section section">
+    <div class="container">
+      <h2 class="section-title">Try the Gacha!</h2>
+      <p style="color:var(--text-muted); max-width:600px; margin:0 auto 24px">
+        Click to simulate hatching a TermiPet (browser demo — no Node.js needed)
+      </p>
+      
+      <div id="gacha-result">
+        <span style="color:var(--text-muted); font-size:0.95rem">Click the button to hatch your pet!</span>
+      </div>
+      
+      <button class="btn btn-primary" onclick="hatchPet()" style="font-size:1.05rem; padding:16px 48px; margin-top:12px">
+        🥚 Hatch a Pet!
+      </button>
     </div>
-  </section>section>
-  
-  <!-- FOOTER -->
+  </section>
+
+  <!-- ⬇️ INSTALL -->
+  <section class="install-section section" id="install">
+    <div class="container install-inner">
+      <h2 class="section-title" style="text-align:left; margin-bottom:2rem">Get Started</h2>
+      
+      <div class="code-block">
+        <span class="code-comment"># Clone and install</span><br>
+        <span class="code-cmd">$ </span><span class="code-path">git clone https://github.com/anshmajumdar121/termipet.git</span><br>
+        <span class="code-cmd">$ </span><span class="code-path">cd termipet</span><br>
+        <span class="code-cmd">$ </span><span class="code-path">npm install && npm link</span><br>
+        <br>
+        <span class="code-comment"># Hatch your pet!</span><br>
+        <span class="code-cmd">$ </span><span class="code-path">termipet hatch</span>
+      </div>
+      
+      <h3 style="color:var(--text-primary); margin:36px 0 20px; font-size:1.25rem; font-weight:700">Commands</h3>
+      <table class="cmd-table">
+        <tr><td>termipet hatch</td><td>Hatch your first TermiPet (deterministic — unique to you!)</td></tr>
+        <tr><td>termipet show</td><td>Display your current pet with ASCII art</td></tr>
+        <tr><td>termipet watch</td><td>Watch your pet animate live in the terminal</td></tr>
+        <tr><td>termipet stats</td><td>Show detailed stats: DEBUGGING, PATIENCE, CHAOS, WISDOM, SNARK</td></tr>
+        <tr><td>termipet feed</td><td>Feed your pet 🍖</td></tr>
+        <tr><td>termipet play</td><td>Play with your pet 🎮</td></tr>
+        <tr><td>termipet theme</td><td>Switch between custom themes</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- 🦶 PREMIUM FOOTER -->
   <footer>
-      <p>TermiPet 🐾 — Open source under the <a href="https://github.com/anshmajumdar121/termipet/blob/main/LICENSE">MIT License</a>a></p>
-    <p style="margin-top:8px"><a href="https://github.com/anshmajumdar121/termipet">GitHub</a>a> · Built with ❤️ for terminal lovers</p>
+    <div class="container">
+      <div class="footer-brand">
+        <span>TermiPet</span> 🐾
+      </div>
+      
+      <p class="footer-credit">
+        Made with <span style="color:var(--accent-pink)">❤️</span> by <strong>Ansh</strong>
+      </p>
+      
+      <div class="footer-links">
+        <a href="https://github.com/anshmajumdar121" target="_blank" rel="noopener" class="footer-link">
+          <i>🔗</i> GitHub: anshmajumdar121
+        </a>
+        <a href="mailto:majumdar82@gmail.com" class="footer-link">
+          <i>✉️</i> majumdar82@gmail.com
+        </a>
+        <a href="https://github.com/anshmajumdar121/termipet/blob/main/LICENSE" target="_blank" rel="noopener" class="footer-link">
+          <i>📜</i> MIT License
+        </a>
+      </div>
+      
+      <div class="payment-section">
+        <p class="payment-title">Support Development</p>
+        <div class="payment-options">
+          <div class="payment-card">
+            <h4>💳 PayPal</h4>
+            <p>Any amount appreciated</p>
+            <code class="payment-email">majumdar82@gmail.com</code>
+            <a href="https://paypal.me/majumdar82" target="_blank" rel="noopener" style="display:inline-block; margin-top:8px; font-size:0.9rem; color:var(--accent-cyan)">Send Payment →</a>
+          </div>
+          <div class="payment-card">
+            <h4>📱 QR Code</h4>
+            <p>Scan to contribute</p>
+            <div class="qr-placeholder">
+              <i>🔲</i>
+              <span>Add Your QR</span>
+            </div>
+          </div>
+          <div class="payment-card">
+            <h4>🐙 GitHub</h4>
+            <p>Sponsor the project</p>
+            <a href="https://github.com/sponsors/anshmajumdar121" target="_blank" rel="noopener" style="display:inline-block; margin-top:8px; font-size:0.9rem; color:var(--accent-cyan)">Become a Sponsor →</a>
+          </div>
+        </div>
+      </div>
+      
+      <p class="copyright">
+        &copy; <span id="year"></span> TermiPet. Open Source & Free Forever. 
+        <a href="https://github.com/anshmajumdar121">github.com/anshmajumdar121</a>
+      </p>
+    </div>
   </footer>
-  
+
+  <!-- 🧠 JAVASCRIPT -->
   <script>
-      const SPECIES = [
-        { name: 'Pebblecrab',  rarity: 'common',    sprite: '  /o.o\\  \n (|---|) \n  U   U  ', color: '#e6edf3' },
-        { name: 'Dustbunny',   rarity: 'common',    sprite: ' (^.^) \n (> <) \n  m m  ', color: '#e6edf3' },
-        { name: 'Mossfrog',    rarity: 'common',    sprite: ' (@.@) \n (> <) \n  ^ ^  ', color: '#3fb950' },
-        { name: 'Twigling',    rarity: 'common',    sprite: ' {^.^} \n  /|\\ \n  / \\ ', color: '#e3b341' },
-        { name: 'Dewdrop',     rarity: 'common',    sprite: '  (o_o)  \n  ( V )  \n   |_|   ', color: '#79c0ff' },
-        { name: 'Puddlefish',  rarity: 'common',    sprite: ' ><(((o> ', color: '#79c0ff' },
-        { name: 'Cloudferret', rarity: 'uncommon',  sprite: ' (^..^) \n  /UU\\ \n  ~ww~  ', color: '#3fb950' },
-        { name: 'Gustowl',     rarity: 'uncommon',  sprite: ' (O,O) \n (|--|) \n  "  "  ', color: '#3fb950' },
-        { name: 'Bramblebear', rarity: 'uncommon',  sprite: ' {^.^} \n (> <) \n  UUU  ', color: '#3fb950' },
-        { name: 'Thornfox',    rarity: 'uncommon',  sprite: ' /^.^\\ \n (> <) \n   ~|  ', color: '#3fb950' },
-        { name: 'Crystaldrake',rarity: 'rare',      sprite: ' <*.*> \n  /|\\ \n // \\\\ ', color: '#79c0ff' },
-        { name: 'Deepstag',    rarity: 'rare',      sprite: ' Y(^.^)Y \n  (| |)  \n  // \\\\  ', color: '#79c0ff' },
-        { name: 'Lavapup',     rarity: 'rare',      sprite: ' (~.~) \n  (UU) \n   ww  ', color: '#ff7b72' },
-        { name: 'Stormwyrm',   rarity: 'epic',      sprite: ' ~*~*~ \n(=====)\n ~*~*~ ', color: '#d2a8ff' },
-        { name: 'Voidcat',     rarity: 'epic',      sprite: ' (*.*) \n (> <) \n   |   ', color: '#d2a8ff' },
-        { name: 'Aetherling',  rarity: 'epic',      sprite: ' {*.*} \n  |||  \n /___\\ ', color: '#d2a8ff' },
-        { name: 'Cosmoshale',  rarity: 'legendary', sprite: ' ..*..  \n(======)\n \\____/ ', color: '#e3b341' },
-        { name: 'Nebulynx',    rarity: 'legendary', sprite: ' *(*.*)*\n  (> <) \n * |*| *', color: '#e3b341' },
-          ];
-      const WEIGHTS = { common: 60, uncommon: 25, rare: 10, epic: 4, legendary: 1 };
-      const RARITY_CLASS = { common: 'out-common', uncommon: 'out-uncommon', rare: 'out-rare', epic: 'out-epic', legendary: 'out-legendary' };
+    // Set current year
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-      function mulberry32(seed) {
-            return function() {
-                    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
-                    var t = Math.imul(seed ^ seed >>> 15, 1 | seed);
-                    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
-                    return ((t ^ t >>> 14) >>> 0) / 4294967296;
-            };
+    // ===== GACHA SYSTEM =====
+    const SPECIES = [
+      { name: 'Pebblecrab',  rarity: 'common',    sprite: '  /o.o\\  \n (|---|) \n  U   U  ', color: 'var(--rarity-common)' },
+      { name: 'Dustbunny',   rarity: 'common',    sprite: ' (^.^) \n (> <) \n  m m  ', color: 'var(--rarity-common)' },
+      { name: 'Mossfrog',    rarity: 'common',    sprite: ' (@.@) \n (> <) \n  ^ ^  ', color: 'var(--rarity-uncommon)' },
+      { name: 'Twigling',    rarity: 'common',    sprite: ' {^.^} \n  /|\\ \n  / \\ ', color: 'var(--rarity-common)' },
+      { name: 'Dewdrop',     rarity: 'common',    sprite: '  (o_o)  \n  ( V )  \n   |_|   ', color: 'var(--rarity-rare)' },
+      { name: 'Puddlefish',  rarity: 'common',    sprite: ' ><(((o> ', color: 'var(--rarity-rare)' },
+      { name: 'Cloudferret', rarity: 'uncommon',  sprite: ' (^..^) \n  /UU\\ \n  ~ww~  ', color: 'var(--rarity-uncommon)' },
+      { name: 'Gustowl',     rarity: 'uncommon',  sprite: ' (O,O) \n (|--|) \n  "  "  ', color: 'var(--rarity-uncommon)' },
+      { name: 'Bramblebear', rarity: 'uncommon',  sprite: ' {^.^} \n (> <) \n  UUU  ', color: 'var(--rarity-uncommon)' },
+      { name: 'Thornfox',    rarity: 'uncommon',  sprite: ' /^.^\\ \n (> <) \n   ~|  ', color: 'var(--rarity-uncommon)' },
+      { name: 'Crystaldrake',rarity: 'rare',      sprite: ' <*.*> \n  /|\\ \n // \\\\ ', color: 'var(--rarity-rare)' },
+      { name: 'Deepstag',    rarity: 'rare',      sprite: ' Y(^.^)Y \n  (| |)  \n  // \\\\  ', color: 'var(--rarity-rare)' },
+      { name: 'Lavapup',     rarity: 'rare',      sprite: ' (~.~) \n  (UU) \n   ww  ', color: 'var(--accent-red)' },
+      { name: 'Stormwyrm',   rarity: 'epic',      sprite: ' ~*~*~ \n(=====)\n ~*~*~ ', color: 'var(--rarity-epic)' },
+      { name: 'Voidcat',     rarity: 'epic',      sprite: ' (*.*) \n (> <) \n   |   ', color: 'var(--rarity-epic)' },
+      { name: 'Aetherling',  rarity: 'epic',      sprite: ' {*.*} \n  |||  \n /___\\ ', color: 'var(--rarity-epic)' },
+      { name: 'Cosmoshale',  rarity: 'legendary', sprite: ' ..*..  \n(======)\n \\____/ ', color: 'var(--rarity-legendary)' },
+      { name: 'Nebulynx',    rarity: 'legendary', sprite: ' *(*.*)*\n  (> <) \n * |*| *', color: 'var(--rarity-legendary)' },
+    ];
+
+    const WEIGHTS = { common: 60, uncommon: 25, rare: 10, epic: 4, legendary: 1 };
+
+    // Mulberry32 PRNG
+    function mulberry32(seed) {
+      return function() {
+        seed |= 0; 
+        seed = seed + 0x6D2B79F5 | 0;
+        let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+        t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      };
+    }
+
+    function hatchPet() {
+      const seed = Math.floor(Math.random() * 0xFFFFFFFF);
+      const rng = mulberry32(seed);
+      
+      // Weighted selection
+      const pool = SPECIES.map(s => ({ 
+        ...s, 
+        weight: WEIGHTS[s.rarity] / SPECIES.filter(x => x.rarity === s.rarity).length 
+      }));
+      
+      const total = pool.reduce((sum, x) => sum + x.weight, 0);
+      let r = rng() * total;
+      let chosen = pool[pool.length - 1];
+      
+      for (const s of pool) { 
+        r -= s.weight; 
+        if (r <= 0) { chosen = s; break; } 
       }
+      
+      const isShiny = rng() < 0.01;
+      
+      // Generate stats
+      const stats = {
+        DEBUGGING: Math.floor(rng() * 101),
+        PATIENCE:  Math.floor(rng() * 101),
+        CHAOS:     Math.floor(rng() * 101),
+        WISDOM:    Math.floor(rng() * 101),
+        SNARK:     Math.floor(rng() * 101),
+      };
 
-      function hatchPet() {
-            const seed = Math.floor(Math.random() * 0xFFFFFFFF);
-            const rng = mulberry32(seed);
-            const pool = SPECIES.map(s => ({ ...s, weight: WEIGHTS[s.rarity] / SPECIES.filter(x => x.rarity === s.rarity).length }));
-            const total = pool.reduce((s, x) => s + x.weight, 0);
-            let r = rng() * total;
-            let chosen = pool[pool.length - 1];
-            for (const s of pool) { r -= s.weight; if (r <= 0) { chosen = s; break; } }
-            const isShiny = rng() < 0.01;
-            const stats = {
-                    DEBUGGING: Math.floor(rng() * 101),
-                    PATIENCE:  Math.floor(rng() * 101),
-                    CHAOS:     Math.floor(rng() * 101),
-                    WISDOM:    Math.floor(rng() * 101),
-                    SNARK:     Math.floor(rng() * 101),
-            };
+      const el = document.getElementById('gacha-result');
+      const rarityColors = { 
+        common: 'var(--rarity-common)', 
+        uncommon: 'var(--rarity-uncommon)', 
+        rare: 'var(--rarity-rare)', 
+        epic: 'var(--rarity-epic)', 
+        legendary: 'var(--rarity-legendary)' 
+      };
+      
+      const color = rarityColors[chosen.rarity];
+      const shinyHtml = isShiny 
+        ? '<div class="shiny-badge">✨ SHINY!</div>' 
+        : '';
 
-            const el = document.getElementById('gacha-result');
-            const rarityColors = { common: '#e6edf3', uncommon: '#3fb950', rare: '#79c0ff', epic: '#d2a8ff', legendary: '#e3b341' };
-            const color = rarityColors[chosen.rarity];
-            const shinyHtml = isShiny ? '<div class="shiny" style="font-size:1.2rem;margin-bottom:4px">✨ SHINY!</div>' : '';
-
-            let statsHtml = '<div class="pet-stats">';
-            for (const [k, v] of Object.entries(stats)) {
-                    const bar = '█'.repeat(Math.floor(v/10)) + '░'.repeat(10-Math.floor(v/10));
-                    statsHtml += `<div class="stat-row"><span class="stat-name">${k}</span><span style="color:${color}">${bar}</span><span class="stat-val"> ${v}</span></div>`;
-            }
-            statsHtml += '</div>';
-
-            el.style.borderColor = color;
-            el.innerHTML = `
-                  ${shinyHtml}
-                        <div class="pet-name" style="color:${color}">${chosen.name}</div>
-                              <div style="color:${color};font-size:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px">[${chosen.rarity}]</div>
-                                    <pre class="pet-sprite" style="color:${color};font-size:1rem">${chosen.sprite}</pre>
-                                          ${statsHtml}
-                                              `;
-
-            el.style.animation = 'none';
-            setTimeout(() => el.style.animation = '', 10);
+      // Build stats HTML
+      let statsHtml = '<div class="pet-stats">';
+      for (const [key, value] of Object.entries(stats)) {
+        const barFilled = Math.floor(value / 10);
+        const barEmpty = 10 - barFilled;
+        statsHtml += `
+          <div class="stat-row">
+            <span class="stat-name">${key}</span>
+            <span style="color:${color}">${'█'.repeat(barFilled)}${'░'.repeat(barEmpty)}</span>
+            <span class="stat-val">${value}</span>
+          </div>
+        `;
       }
+      statsHtml += '</div>';
+
+      // Animate result
+      el.classList.add('active');
+      el.style.borderColor = isShiny ? 'var(--rarity-legendary)' : color;
+      
+      el.innerHTML = `
+        ${shinyHtml}
+        <div class="pet-name" style="color:${color}">${chosen.name}</div>
+        <div style="color:${color}; font-size:0.85rem; font-weight:700; text-transform:uppercase; letter-spacing:2px; margin-bottom:12px">
+          [${chosen.rarity}]
+        </div>
+        <pre class="pet-sprite" style="color:${color}">${chosen.sprite}</pre>
+        ${statsHtml}
+      `;
+      
+      // Reset animation
+      setTimeout(() => el.classList.remove('active'), 1500);
+    }
+
+    // ===== SMOOTH SCROLL FOR ANCHOR LINKS =====
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // ===== CONSOLE EASTER EGG =====
+    console.log('%c🐾 TermiPet', 'font-size:24px; font-weight:bold; color:#22d3ee');
+    console.log('%cMade with ❤️ by Ansh', 'color:#94a3b8');
+    console.log('%cGitHub: https://github.com/anshmajumdar121', 'color:#60a5fa');
   </script>
-  </body>
-</html>html>
-  </script></p>
-  </footer></td></td></tr></tr></td></td></tr></tr></td></td></tr></tr></td></td>
-                </tr>
-          </tr></td></td>
-                </tr>
-          </tr></td></td>
-                </tr>
-        </tbody></th></th>
-                </tr>
-        </thead></code></p></p></h3>
-    </div></div></p></span></h1>
-  </body>
-    </style></title>
-  </head>
+</body>
+</html>
